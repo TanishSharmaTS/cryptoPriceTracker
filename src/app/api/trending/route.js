@@ -2,7 +2,7 @@ export async function GET() {
 
     try {
 
-        const response = await fetch('https://api.coingecko.com/api/v3/search/trending')
+        const response = await fetch('https://api.coingecko.com/api/v3/search/trending', { next: { revalidate: 300 } })
 
 
         const data = await response.json()

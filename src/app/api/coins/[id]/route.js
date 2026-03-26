@@ -5,7 +5,7 @@ export async function GET(request, {params}) {
         const { id } = await params
         console.log(id)
 
-        const res = await fetch(`https://api.coingecko.com/api/v3/coins/${id}`)
+        const res = await fetch(`https://api.coingecko.com/api/v3/coins/${id}`, { next: { revalidate: 300 } })
 
         const data = await res.json()
 
