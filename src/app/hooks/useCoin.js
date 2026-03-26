@@ -21,7 +21,9 @@ export const useCoin = (id) => {
             try {
                 setLoading(true)
                 const data = await fetchCoinData(id)
-                setCoin(data)
+
+                console.log(data)
+                setCoin(data.coin)
                 setError(null)
             } catch (error) {
                 setError(error?.message || 'Failed to load coin')

@@ -28,7 +28,11 @@ export const fetchCoinData = async (id) => {
 
         const data = await res.json()
 
-        return data?.data ?? data
+        return {
+            coin: data.coin,
+            chart:data.chart
+        }
+
     } catch (error) {
         console.error("Error fetching coin data:", error)
         throw error

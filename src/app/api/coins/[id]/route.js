@@ -2,15 +2,19 @@ export async function GET(request, {params}) {
 
     try {
 
-        const { id } = await params
-        console.log(id)
+        const { id } =  await params
 
-        const res = await fetch(`https://api.coingecko.com/api/v3/coins/${id}`, { next: { revalidate: 300 } })
+        const [coinRes, chartRes] = await Promise.all([
+            fetch(`https://api.coingecko.com/api/v3/coins/${id}`, { next: { revalidate: 300 } }),
+            fetch(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=7`, {next: { revalidate: 300 }})
+        ])
 
-        const data = await res.json()
+        const [coin, chart] = await Promise.all([
+            coinRes.json(),
+            chartRes.json()
+        ])
 
-        console.log(data)
-        return Response.json({ data }, { status: 200 })
+        return Response.json({coin, chart}, { status: 200 })
 
     } catch (error) {
 
