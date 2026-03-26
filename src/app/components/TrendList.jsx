@@ -1,5 +1,5 @@
 "use client";
-import { useTrending } from "../hooks/trending";
+import { useTrending } from "../hooks/useTrending";
 import TrendCoinCard from "./TrendCoinCard";
 
 export default function TrendList() {
