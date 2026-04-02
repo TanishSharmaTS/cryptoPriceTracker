@@ -1,4 +1,4 @@
-import CoinList from "./components/CoinList";
+import CoinList from "../components/CoinList";
 
 export default function Home() {
     return (
