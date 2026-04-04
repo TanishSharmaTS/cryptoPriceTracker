@@ -17,7 +17,7 @@ export const fetchCoins = async () => {
     }
 }
 
-export const fetchCoinData = async (id, currency='usd', days='365') => {
+export const fetchCoinDataFull = async (id, currency='usd', days='365') => {
 
     try {
         const res = await fetch(`/api/coins/${id}?currency=${currency}&days=${days}`)
@@ -35,6 +35,39 @@ export const fetchCoinData = async (id, currency='usd', days='365') => {
 
     } catch (error) {
         console.error("Error fetching coin data:", error)
+        throw error
+    }
+}
+
+export const fetchCoinDetails = async (id) => {
+    try {
+        const res = await fetch(`/api/coins/${id}?details_only=true`)
+
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`)
+        }
+
+        const data = await res.json()
+        return data.coin
+    } catch (error) {
+        console.error("Error fetching coin details:", error)
+        throw error
+    }
+}
+
+// Fetch only chart data
+export const fetchCoinData = async (id, currency = 'usd', days = '365') => {
+    try {
+        const res = await fetch(`/api/coins/${id}/chart?currency=${currency}&days=${days}`)
+
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`)
+        }
+
+        const data = await res.json()
+        return data
+    } catch (error) {
+        console.error("Error fetching chart data:", error)
         throw error
     }
 }

@@ -22,7 +22,7 @@ export function CoinCard() {
   const params = useParams();
   const id = params?.id;
 
-  const { loading, error, coin, priceHistory, currency, updateCurrency, updateDays } = useCoin(id);
+  const { loading, chartLoading, error, coin, priceHistory, currency, updateCurrency, updateDays } = useCoin(id);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Unable to load coin details: {error}</p>;
@@ -65,6 +65,7 @@ export function CoinCard() {
         </p>
       </div>
 
+      {chartLoading && <p>Updating chart...</p>}
       <LineChart priceData={priceHistory} currency={currency} />
     </div>
   );
@@ -76,7 +77,13 @@ function LineChart({ priceData, currency }) {
   }
 
   const symbol = currency === 'inr' ? 'Nu' : '$';
-  const labels = priceData.map((item) => new Date(item[0]).toLocaleDateString());
+  
+  // Format dates nicely
+  const labels = priceData.map((item) => {
+    const date = new Date(item[0]);
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  });
+  
   const dataset = priceData.map((item) => item[1]);
 
   const data = {
@@ -93,25 +100,44 @@ function LineChart({ priceData, currency }) {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: true,
     plugins: {
-      legend: { display: true },
-      tooltip: {
-        callbacks: {
-          label: (context) => `${context.dataset.label}: ${symbol}${context.parsed.y.toLocaleString()}`
-        }
-      }
+      legend: { 
+        display: true,
+        position: 'top' 
+      },
     },
     scales: {
       y: {
-        title: { display: true, text: `Price (${currency === 'inr' ? 'BTN' : 'USD'})` },
-        ticks: { callback: (value) => `${symbol}${value.toLocaleString()}` }
+        title: { 
+          display: true, 
+          text: `Price (${currency === 'inr' ? 'BTN' : 'USD'})`,
+          font: { size: 12 }
+        },
+        ticks: { 
+          callback: (value) => `${symbol}${value.toLocaleString()}`,
+          stepSize: 200000 
+        }
       },
-      x: { title: { display: true, text: "Date" } }
+      x: {
+        title: { 
+          display: true, 
+          text: "Date",
+          font: { size: 12 }
+        },
+        ticks: {
+          maxRotation: 45,
+          minRotation: 45,
+          autoSkip: true,
+          autoSkipPadding: 20,
+          maxTicksLimit: 8 
+        }
+      }
     },
   };
 
   return (
-    <div style={{ width: "1000px", margin: "0 auto" }}>
+    <div style={{ width: "100%", maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
       <Line data={data} options={options} />
     </div>
   );
