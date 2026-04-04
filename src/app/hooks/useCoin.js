@@ -10,6 +10,8 @@ export const useCoin = (id) => {
     const [priceHistory, setPriceHistory] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [currency, setCurrency] = useState('usd')
+    const [days, setDays]= useState('365')
 
     useEffect(() => {
         if (!id) {
@@ -21,7 +23,7 @@ export const useCoin = (id) => {
         const getData = async () => {
             try {
                 setLoading(true)
-                const data = await fetchCoinData(id)
+                const data = await fetchCoinData(id, currency, days)
 
                 setCoin(data.coin)
                 setPriceHistory(data.chart.prices)
@@ -34,7 +36,15 @@ export const useCoin = (id) => {
         }
 
         getData()
-    }, [id])
+    }, [id, currency, days])
 
-    return { coin, loading, error, priceHistory }
+    const updateCurrency = (newCurrency) => {
+        setCurrency(newCurrency)
+    }
+
+    const updateDays = (newDays) => {
+        setDays(newDays)
+    }
+
+    return { coin, loading, error, priceHistory, currency, updateCurrency, updateDays }
 }

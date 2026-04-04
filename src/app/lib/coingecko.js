@@ -17,10 +17,10 @@ export const fetchCoins = async () => {
     }
 }
 
-export const fetchCoinData = async (id) => {
+export const fetchCoinData = async (id, currency='usd', days='365') => {
 
     try {
-        const res = await fetch(`/api/coins/${id}`)
+        const res = await fetch(`/api/coins/${id}?currency=${currency}&days=${days}`)
 
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`)

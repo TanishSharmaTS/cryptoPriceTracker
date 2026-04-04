@@ -1,4 +1,4 @@
-export async function GET(request, {params, query}) {
+export async function GET(request, {params}) {
 
     try {
 
