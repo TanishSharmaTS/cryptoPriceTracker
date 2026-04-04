@@ -1,0 +1,38 @@
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.85rem 2rem;
+  background: rgba(8, 12, 20, 0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.link {
+  font-family: var(--text-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text-muted);
+  padding: 0.45em 0.9em;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.link:hover {
+  color: var(--text-primary);
+  border-color: var(--border);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.linkActive {
+  color: var(--gold);
+  border-color: var(--border-accent);
+  background: var(--gold-dim);
+}

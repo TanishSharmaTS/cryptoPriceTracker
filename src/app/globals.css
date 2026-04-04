@@ -1,13 +1,27 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap');
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --bg-base:       #080c14;
+  --bg-surface:    #0d1420;
+  --bg-card:       #111927;
+  --bg-elevated:   #162032;
+  --border:        rgba(255, 255, 255, 0.06);
+  --border-accent: rgba(212, 175, 55, 0.35);
+
+  --gold:          #d4af37;
+  --gold-bright:   #f0cb5a;
+  --gold-dim:      rgba(212, 175, 55, 0.15);
+  --teal:          #4cc9b0;
+  --teal-dim:      rgba(76, 201, 176, 0.12);
+  --red:           #f05c5c;
+  --red-dim:       rgba(240, 92, 92, 0.12);
+
+  --text-primary:  #e8edf5;
+  --text-secondary:#8a9ab5;
+  --text-muted:    #4a5a72;
+  --text-dark: #000000;
+  --text-mono:     'Space Mono', monospace;
+  --text-display:  'Syne', sans-serif;
 }
 
 html {
@@ -42,8 +56,3 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}

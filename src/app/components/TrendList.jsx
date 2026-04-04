@@ -1,16 +1,23 @@
 "use client";
 import { useTrending } from "../hooks/useTrending";
 import TrendCoinCard from "./TrendCoinCard";
+import styles from "./TrendList.module.css";
 
 export default function TrendList() {
   const { loading, error, coins } = useTrending();
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Unable to load the coins: {error}</p>;
-  if (!coins || coins.length === 0) return <p>No trending coins</p>;
+  if (loading) return <p className={styles.statusMessage}>Loading</p>;
+  if (error) return <p className={styles.statusMessage}>Unable to load the coins: {error}</p>;
+  if (!coins || coins.length === 0) return <p className={styles.statusMessage}>No trending coins</p>;
 
   return (
-    <section>
+    <section className={styles.section}>
+      <div className={styles.columnLabels}>
+        <span className={styles.columnLabel}>#</span>
+        <span className={styles.columnLabel}></span>
+        <span className={styles.columnLabel}>Asset</span>
+        <span className={styles.columnLabel}>Price / Market Cap</span>
+      </div>
       {coins.map((item) => (
         <TrendCoinCard
           key={item.item.id}

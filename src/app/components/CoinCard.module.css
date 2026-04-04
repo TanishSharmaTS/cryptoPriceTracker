@@ -1,0 +1,363 @@
+.page {
+  min-height: 100vh;
+  background-color: var(--bg-base);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212, 175, 55, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 90% 80%, rgba(76, 201, 176, 0.04) 0%, transparent 60%);
+  font-family: var(--text-display);
+  color: var(--text-primary);
+  padding: 2rem 1.5rem 4rem;
+}
+
+.pageTitle {
+  font-family: var(--text-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.statusMessage {
+  font-family: var(--text-mono);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding: 3rem;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+.statusMessage::before {
+  content: '> ';
+  color: var(--gold);
+}
+
+.card {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.04),
+    0 24px 64px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(0, 0, 0, 0.3);
+  animation: cardReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes cardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 2rem 2rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%);
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.coinName {
+  font-family: var(--text-display);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1;
+}
+
+.coinMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.coinSymbol {
+  font-family: var(--text-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: var(--gold-dim);
+  border: 1px solid var(--border-accent);
+  padding: 0.2em 0.6em;
+  border-radius: 2px;
+}
+
+.hashAlgo {
+  font-family: var(--text-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem 2rem;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.controlGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.controlLabel {
+  font-family: var(--text-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-right: 0.25rem;
+}
+
+.btn {
+  font-family: var(--text-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 0.4em 0.9em;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.btn:hover {
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.btnActive {
+  color: var(--gold);
+  border-color: var(--border-accent);
+  background: var(--gold-dim);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.statCell {
+  padding: 1.5rem 2rem;
+  border-right: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.statCell:last-child {
+  border-right: none;
+}
+
+.statCell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: transparent;
+  transition: background 0.2s;
+}
+
+.statCell:hover::before {
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+.statLabel {
+  font-family: var(--text-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 0.6rem;
+}
+
+.statValue {
+  font-family: var(--text-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: block;
+  letter-spacing: -0.01em;
+}
+
+.priceValue {
+  font-size: 1.4rem;
+  color: var(--gold-bright);
+}
+
+.changePositive {
+  color: var(--teal);
+  background: var(--teal-dim);
+  border: 1px solid rgba(76, 201, 176, 0.2);
+  font-family: var(--text-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.15em 0.5em;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.changeNegative {
+  color: var(--red);
+  background: var(--red-dim);
+  border: 1px solid rgba(240, 92, 92, 0.2);
+  font-family: var(--text-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.15em 0.5em;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.chartSection {
+  padding: 1.5rem 2rem 2rem;
+}
+
+.chartHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.chartTitle {
+  font-family: var(--text-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.chartUpdating {
+  font-family: var(--text-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+.chartWrapper {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 1.25rem;
+}
+
+.descriptionSection {
+  margin: 20px;
+  padding: 0 2rem 2rem;
+}
+
+.descriptionTitle {
+  font-family: var(--text-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.description {
+  font-family: var(--text-display);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  overflow: hidden;
+}
+
+/* ── Responsive ─────────────────────────────── */
+@media (max-width: 768px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .statCell:nth-child(2) {
+    border-right: none;
+  }
+
+  .statCell:nth-child(3) {
+    border-top: 1px solid var(--border);
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .coinName {
+    font-size: 1.5rem;
+  }
+
+  .controls {
+    gap: 1rem;
+  }
+
+  .chartSection,
+  .descriptionSection {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .statCell {
+    padding: 1.25rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statCell {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .statCell:last-child {
+    border-bottom: none;
+  }
+}

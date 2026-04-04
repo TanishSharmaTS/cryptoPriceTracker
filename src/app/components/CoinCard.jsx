@@ -2,7 +2,6 @@
 
 import { useParams } from "next/navigation"
 import { useCoin } from "../hooks/useCoin"
-import React from "react"
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,6 +14,7 @@ import {
   Filler,
 } from "chart.js"
 import { Line } from "react-chartjs-2"
+import styles from "./CoinCard.module.css"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler)
 
@@ -22,68 +22,134 @@ export function CoinCard() {
   const params = useParams();
   const id = params?.id;
 
-  const { loading, chartLoading, error, coin, priceHistory, currency, updateCurrency, updateDays } = useCoin(id);
+  const { loading, chartLoading, error, coin, priceHistory, currency, updateCurrency, updateDays, days } = useCoin(id);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Unable to load coin details: {error}</p>;
-  if (!coin) return <p>No coin found</p>;
+  if (loading) return <p className={styles.statusMessage}>Loading coin data</p>;
+  if (error) return <p className={styles.statusMessage}>Unable to load coin details: {error}</p>;
+  if (!coin) return <p className={styles.statusMessage}>No coin found</p>;
 
   const symbol = currency === 'inr' ? 'Nu' : '$';
 
   return (
-    <div>
-      <h1>{coin.name}</h1>
-      <h2>{coin.symbol}</h2>
-      <h3>{coin.hashing_algorithm}</h3>
-      <p>{coin.description?.en}</p>
+    <div className={styles.card}>
 
-      <div>
-        <div>
-          <label>Currency: </label>
-          <button onClick={() => updateCurrency('usd')}>USD ($)</button>
-          <button onClick={() => updateCurrency('inr')}>BTN (Nu)</button>
-        </div>
-
-        <div>
-          <label>Time Period: </label>
-          <button onClick={() => updateDays('30')}>1 Month</button>
-          <button onClick={() => updateDays('365')}>1 Year</button>
+      <div className={styles.header}>
+        <div className={styles.headerLeft}>
+          <h1 className={styles.coinName}>{coin.name}</h1>
+          <div className={styles.coinMeta}>
+            <span className={styles.coinSymbol}>{coin.symbol?.toUpperCase()}</span>
+            {coin.hashing_algorithm && (
+              <span className={styles.hashAlgo}>{coin.hashing_algorithm}</span>
+            )}
+          </div>
         </div>
       </div>
 
-      <div>
-        <h3>Current Price: {symbol}{coin.market_data?.current_price?.[currency]?.toLocaleString() || 0}</h3>
-        <p>Market Cap: {symbol}{coin.market_data?.market_cap?.[currency]?.toLocaleString() || 0}</p>
-        <p>24h Volume: {symbol}{coin.market_data?.total_volume?.[currency]?.toLocaleString() || 0}</p>
-        <p>24h Price Change:
-          <span style={{
-            color: coin.market_data?.price_change_percentage_24h > 0 ? "green" : "red",
-            marginLeft: "5px"
-          }}>
+      <div className={styles.controls}>
+        <div className={styles.controlGroup}>
+          <span className={styles.controlLabel}>Currency</span>
+          <button
+            className={`${styles.btn} ${currency === 'usd' ? styles.btnActive : ''}`}
+            onClick={() => updateCurrency('usd')}
+          >
+            USD ($)
+          </button>
+          <button
+            className={`${styles.btn} ${currency === 'inr' ? styles.btnActive : ''}`}
+            onClick={() => updateCurrency('inr')}
+          >
+            BTN (Nu)
+          </button>
+        </div>
+
+        <div className={styles.controlGroup}>
+          <span className={styles.controlLabel}>Period</span>
+          <button
+            className={`${styles.btn} ${days === '30' ? styles.btnActive : ''}`}
+            onClick={() => updateDays('30')}
+          >
+            1 Month
+          </button>
+          <button
+            className={`${styles.btn} ${days === '365' ? styles.btnActive : ''}`}
+            onClick={() => updateDays('365')}
+          >
+            1 Year
+          </button>
+        </div>
+      </div>
+
+      <div className={styles.statsGrid}>
+        <div className={styles.statCell}>
+          <span className={styles.statLabel}>Current Price</span>
+          <span className={`${styles.statValue} ${styles.priceValue}`}>
+            {symbol} {coin.market_data?.current_price?.[currency]?.toLocaleString() ?? 0}
+          </span>
+        </div>
+
+        <div className={styles.statCell}>
+          <span className={styles.statLabel}>Market Cap</span>
+          <span className={styles.statValue}>
+            {symbol} {coin.market_data?.market_cap?.[currency]?.toLocaleString() ?? 0}
+          </span>
+        </div>
+
+        <div className={styles.statCell}>
+          <span className={styles.statLabel}>24h Volume</span>
+          <span className={styles.statValue}>
+            {symbol} {coin.market_data?.total_volume?.[currency]?.toLocaleString() ?? 0}
+          </span>
+        </div>
+
+        <div className={styles.statCell}>
+          <span className={styles.statLabel}>24h Change</span>
+          <span className={
+            coin.market_data?.price_change_percentage_24h > 0
+              ? styles.changePositive
+              : styles.changeNegative
+          }>
+            {coin.market_data?.price_change_percentage_24h > 0 ? '+' : ''}
             {coin.market_data?.price_change_percentage_24h?.toFixed(2)}%
           </span>
-        </p>
+        </div>
       </div>
 
-      {chartLoading && <p>Updating chart...</p>}
-      <LineChart priceData={priceHistory} currency={currency} />
+      <div className={styles.chartSection}>
+        <div className={styles.chartHeader}>
+          <span className={styles.chartTitle}>Price History</span>
+          {chartLoading && <span className={styles.chartUpdating}>● Updating</span>}
+        </div>
+        <div className={styles.chartWrapper}>
+          <LineChart priceData={priceHistory} currency={currency} />
+        </div>
+      </div>
+
+      {coin.description?.en && (
+        <div className={styles.descriptionSection}>
+          <p className={styles.descriptionTitle}>About</p>
+          <p
+            className={styles.description}
+            dangerouslySetInnerHTML={{ __html: coin.description.en }}
+          />
+        </div>
+      )}
+
     </div>
   );
 }
 
 function LineChart({ priceData, currency }) {
   if (!priceData || priceData.length === 0) {
-    return <p>No chart data available</p>;
+    return <p className={styles.statusMessage}>No chart data available</p>;
   }
 
   const symbol = currency === 'inr' ? 'Nu' : '$';
-  
-  // Format dates nicely
+
   const labels = priceData.map((item) => {
     const date = new Date(item[0]);
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   });
-  
+
   const dataset = priceData.map((item) => item[1]);
 
   const data = {
@@ -92,53 +158,68 @@ function LineChart({ priceData, currency }) {
       label: `Price (${currency === 'inr' ? 'BTN' : 'USD'})`,
       data: dataset,
       fill: true,
-      borderColor: "rgb(75, 192, 192)",
-      backgroundColor: "rgba(75, 192, 192, 0.2)",
-      tension: 0.2,
+      borderColor: "#d4af37",
+      backgroundColor: "rgba(212, 175, 55, 0.08)",
+      pointRadius: 0,
+      pointHoverRadius: 4,
+      pointHoverBackgroundColor: "#d4af37",
+      borderWidth: 1.5,
+      tension: 0.3,
     }],
   };
 
   const options = {
     responsive: true,
     maintainAspectRatio: true,
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
     plugins: {
-      legend: { 
-        display: true,
-        position: 'top' 
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        backgroundColor: "#111927",
+        borderColor: "rgba(212, 175, 55, 0.35)",
+        borderWidth: 1,
+        titleColor: "#8a9ab5",
+        bodyColor: "#f0cb5a",
+        titleFont: { family: "'Space Mono', monospace", size: 11 },
+        bodyFont: { family: "'Space Mono', monospace", size: 12, weight: 'bold' },
+        padding: 10,
+        callbacks: {
+          label: (ctx) => ` ${symbol}${ctx.parsed.y.toLocaleString()}`,
+        },
       },
     },
     scales: {
       y: {
-        title: { 
-          display: true, 
-          text: `Price (${currency === 'inr' ? 'BTN' : 'USD'})`,
-          font: { size: 12 }
-        },
-        ticks: { 
-          callback: (value) => `${symbol}${value.toLocaleString()}`,
-          stepSize: 200000 
-        }
-      },
-      x: {
-        title: { 
-          display: true, 
-          text: "Date",
-          font: { size: 12 }
+        grid: {
+          color: "rgba(255, 255, 255, 0.04)",
         },
         ticks: {
-          maxRotation: 45,
-          minRotation: 45,
+          color: "#4a5a72",
+          font: { family: "'Space Mono', monospace", size: 10 },
+          callback: (value) => `${symbol}${value.toLocaleString()}`,
+        },
+        border: { color: "rgba(255,255,255,0.06)" },
+      },
+      x: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          color: "#4a5a72",
+          font: { family: "'Space Mono', monospace", size: 10 },
+          maxRotation: 0,
           autoSkip: true,
-          autoSkipPadding: 20,
-          maxTicksLimit: 8 
-        }
-      }
+          maxTicksLimit: 8,
+        },
+        border: { color: "rgba(255,255,255,0.06)" },
+      },
     },
   };
 
-  return (
-    <div style={{ width: "100%", maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
-      <Line data={data} options={options} />
-    </div>
-  );
+  return <Line data={data} options={options} />;
 }

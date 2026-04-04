@@ -1,0 +1,96 @@
+
+.card {
+  display: grid;
+  grid-template-columns: 2rem 2rem 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  margin: 0.375rem 0;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: transparent;
+  transition: background 0.15s;
+}
+
+.card:hover {
+  background: var(--bg-elevated);
+  border-color: rgba(212, 175, 55, 0.2);
+  transform: translateX(2px);
+}
+
+.card:hover::before {
+  background: var(--gold);
+}
+
+.rank {
+  font-family: var(--text-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.image {
+  border-radius: 50%;
+  background: var(--bg-elevated);
+}
+
+.nameGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.name {
+  font-family: var(--text-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.symbol {
+  font-family: var(--text-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  margin: 0;
+}
+
+.priceGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+}
+
+.price {
+  font-family: var(--text-mono);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+  margin: 0;
+}
+
+.marketCap {
+  font-family: var(--text-mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin: 0;
+}
